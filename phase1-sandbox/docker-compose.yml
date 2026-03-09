@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: openemr-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  openemr:
+    image: openemr/openemr:latest
+    container_name: openemr-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${OPENEMR_PORT}:80"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_ROOT_PASS: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASSWORD}
+      OE_MODE: dev
+      PHP_INI_MEMORY_LIMIT: 512M
+    volumes:
+      - openemr_sites:/var/www/localhost/htdocs/openemr/sites
+
+volumes:
+  db_data:
+  openemr_sites:

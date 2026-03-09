@@ -1,0 +1,37 @@
+# Copy this file to .env and update values for your clinic profile.
+# Do not place plaintext secrets in this file.
+
+# Profile selector. Expected values map to files in profiles/<name>.env
+CLINIC_PROFILE=primary-care
+
+# GCP target
+PROJECT_ID=your-gcp-project
+REGION=us-central1
+
+# FHIR store resources
+DATASET_ID=clinic-dataset
+FHIR_STORE_ID=clinic-fhir
+BUNDLE_PATH=phase1-sandbox/data/fhir_bundle.json
+
+# Cloud Run + Cloud SQL resources
+SERVICE_NAME=clinic-openemr
+SQL_INSTANCE=clinic-openemr-sql
+CLOUD_SQL_TIER=db-custom-1-3840
+CLOUD_RUN_IMAGE=openemr/openemr:latest
+
+# OpenEMR database defaults
+MYSQL_DATABASE=openemr
+MYSQL_PORT=3306
+
+# Secret Manager secret names (values stored in Secret Manager only)
+SECRET_DB_USER=openemr-db-user
+SECRET_DB_PASS=openemr-db-pass
+SECRET_DB_ROOT_PASS=openemr-db-root-pass
+
+# Installer and smoke-check settings
+MANUAL_SETUP=yes
+ALLOW_UNAUTHENTICATED=yes
+OPENEMR_SMOKE_ENDPOINT=/apis/default/api/
+
+# Optional: Set a temporary installer host for web setup only (Cloud SQL public IP)
+# INSTALL_DB_TCP_HOST=

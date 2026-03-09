@@ -1,0 +1,15 @@
+# Local environment files
+**/.env
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+.venv/
+
+# Generated sandbox data
+phase1-sandbox/data/mock_clinic_data.json
+phase1-sandbox/data/fhir_bundle.json
+
+# OS/editor artifacts
+.DS_Store
+.vscode/
