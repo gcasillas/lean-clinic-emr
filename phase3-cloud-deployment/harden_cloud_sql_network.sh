@@ -8,21 +8,20 @@ source "${SCRIPT_DIR}/../scripts/lib/config.sh"
 usage() {
   cat <<'EOF'
 Usage:
-  harden_cloud_sql_network.sh [--config <PATH>] [--profile <NAME>] [--project <PROJECT_ID>] [--instance <SQL_INSTANCE>]
+  harden_cloud_sql_network.sh [--config <PATH>] [--project <PROJECT_ID>] [--instance <SQL_INSTANCE>]
 
 Removes temporary 0.0.0.0/0 authorized network rules while preserving other configured CIDRs.
 EOF
 }
 
 CONFIG_FILE="${SCRIPT_DIR}/../.env"
-PROFILE=""
 PROJECT="${PROJECT_ID:-}"
 INSTANCE="${SQL_INSTANCE:-}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --config) CONFIG_FILE="$2"; shift 2 ;;
-    --profile) PROFILE="$2"; shift 2 ;;
+    --profile) echo "Warning: --profile is deprecated and ignored." >&2; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
     --instance) INSTANCE="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
@@ -30,7 +29,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-load_config "$CONFIG_FILE" "$PROFILE"
+load_config "$CONFIG_FILE"
 PROJECT="${PROJECT:-${PROJECT_ID:-}}"
 INSTANCE="${INSTANCE:-${SQL_INSTANCE:-}}"
 

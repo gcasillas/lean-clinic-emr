@@ -19,18 +19,18 @@
 - `phase2-cloud-push/`: FHIR store creation and migration validation
 - `phase3-cloud-deployment/`: Cloud SQL + Cloud Run operational scripts
 - `scripts/`: bootstrap and shared config loader
-- `profiles/`: clinic-specific defaults (`primary-care`, `holistic-herbal`)
 - `integration/`: reserved bridge patterns for future PACS or AI services
 
-## Core platform vs clinic profile
+## Deployment model
 
-- Core platform:
-Reusable scripts, deployment workflow, security controls, smoke tests, and base OpenEMR/FHIR pipeline.
+- Single clinic baseline:
+One generic clinic config drives resource names, deployment settings, and OpenEMR runtime defaults.
 
-- Clinic profile:
-Environment defaults (resource names, dataset IDs, service names) and form/mapping extensions for each clinic type.
+- FHIR now:
+FHIR store provisioning and migration are first-class and deployed as part of the main workflow.
 
-This split lets future clinics clone the starter kit and customize profile values without editing core automation.
+- PACS/DICOM ready:
+DICOM dataset/store can be pre-created on demand, while PACS app deployment remains out of scope for now.
 
 ## Security baseline
 

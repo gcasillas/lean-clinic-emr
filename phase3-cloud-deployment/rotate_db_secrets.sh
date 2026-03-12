@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../scripts/lib/config.sh"
 usage() {
   cat <<'EOF'
 Usage:
-  rotate_db_secrets.sh [--config <PATH>] [--profile <NAME>] [--project <PROJECT_ID>]
+  rotate_db_secrets.sh [--config <PATH>] [--project <PROJECT_ID>]
 
 Optional:
   --secret-db-user <SECRET_NAME>
@@ -19,7 +19,6 @@ EOF
 }
 
 CONFIG_FILE="${SCRIPT_DIR}/../.env"
-PROFILE=""
 PROJECT="${PROJECT_ID:-}"
 SECRET_DB_USER_NAME="${SECRET_DB_USER:-openemr-db-user}"
 SECRET_DB_PASS_NAME="${SECRET_DB_PASS:-openemr-db-pass}"
@@ -29,7 +28,7 @@ DB_USER_VALUE="${DB_USER:-openemr}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --config) CONFIG_FILE="$2"; shift 2 ;;
-    --profile) PROFILE="$2"; shift 2 ;;
+    --profile) echo "Warning: --profile is deprecated and ignored." >&2; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
     --secret-db-user) SECRET_DB_USER_NAME="$2"; shift 2 ;;
     --secret-db-pass) SECRET_DB_PASS_NAME="$2"; shift 2 ;;
@@ -40,7 +39,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-load_config "$CONFIG_FILE" "$PROFILE"
+load_config "$CONFIG_FILE"
 PROJECT="${PROJECT:-${PROJECT_ID:-}}"
 SECRET_DB_USER_NAME="${SECRET_DB_USER_NAME:-${SECRET_DB_USER:-openemr-db-user}}"
 SECRET_DB_PASS_NAME="${SECRET_DB_PASS_NAME:-${SECRET_DB_PASS:-openemr-db-pass}}"
@@ -53,7 +52,11 @@ gcloud config set project "$PROJECT" >/dev/null
 gcloud services enable secretmanager.googleapis.com >/dev/null
 
 generate_secret() {
-  tr -dc 'A-Za-z0-9!@#%+=' </dev/urandom | head -c 32
+  # Avoid SIGPIPE with pipefail by consuming a fixed byte stream and trimming.
+  dd if=/dev/urandom bs=1 count=64 2>/dev/null \
+    | base64 \
+    | tr -dc 'A-Za-z0-9!@#%+=' \
+    | cut -c1-32
 }
 
 upsert_secret() {

@@ -83,7 +83,7 @@ def resolve_value(cli_value: str | None, *env_keys: str) -> str | None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=".env", help="Path to root config env file")
-    parser.add_argument("--profile", help="Profile name to load from profiles/<name>.env")
+    parser.add_argument("--profile", help="Deprecated and ignored")
     parser.add_argument("--project")
     parser.add_argument("--region")
     parser.add_argument("--dataset")
@@ -94,7 +94,7 @@ def main() -> None:
     script_dir = Path(__file__).resolve().parent
     root_dir = script_dir.parent
     if args.profile:
-        load_env_file(root_dir / "profiles" / f"{args.profile}.env")
+        print("Warning: --profile is deprecated and ignored.", file=sys.stderr)
     load_env_file((root_dir / args.config).resolve() if not Path(args.config).is_absolute() else Path(args.config))
 
     project = resolve_value(args.project, "PROJECT_ID")

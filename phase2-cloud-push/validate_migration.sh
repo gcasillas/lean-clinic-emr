@@ -8,12 +8,11 @@ source "${SCRIPT_DIR}/../scripts/lib/config.sh"
 usage() {
   cat <<'EOF'
 Usage:
-  validate_migration.sh [--config <PATH>] [--profile <NAME>] [--project <PROJECT_ID>] [--region <REGION>] [--dataset <DATASET_ID>] [--fhir-store <FHIR_STORE_ID>]
+  validate_migration.sh [--config <PATH>] [--project <PROJECT_ID>] [--region <REGION>] [--dataset <DATASET_ID>] [--fhir-store <FHIR_STORE_ID>]
 EOF
 }
 
 CONFIG_FILE="${SCRIPT_DIR}/../.env"
-PROFILE=""
 PROJECT="${PROJECT_ID:-}"
 REGION="${REGION:-}"
 DATASET="${DATASET_ID:-}"
@@ -22,7 +21,7 @@ FHIR_STORE="${FHIR_STORE_ID:-}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --config) CONFIG_FILE="$2"; shift 2 ;;
-    --profile) PROFILE="$2"; shift 2 ;;
+    --profile) echo "Warning: --profile is deprecated and ignored." >&2; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
     --region) REGION="$2"; shift 2 ;;
     --dataset) DATASET="$2"; shift 2 ;;
@@ -32,7 +31,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-load_config "$CONFIG_FILE" "$PROFILE"
+load_config "$CONFIG_FILE"
 PROJECT="${PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-}"
 DATASET="${DATASET:-${DATASET_ID:-}}"

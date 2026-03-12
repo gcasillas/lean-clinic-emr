@@ -13,19 +13,8 @@ _load_env_file() {
 
 load_config() {
   local config_file="${1:-$ROOT_DIR/.env}"
-  local profile_name="${2:-${CLINIC_PROFILE:-}}"
-
-  if [[ -n "$profile_name" && -f "$ROOT_DIR/profiles/${profile_name}.env" ]]; then
-    _load_env_file "$ROOT_DIR/profiles/${profile_name}.env"
-  fi
 
   if [[ -f "$config_file" ]]; then
-    _load_env_file "$config_file"
-  fi
-
-  # Config file may override profile; reload profile if caller passed an explicit profile argument.
-  if [[ -n "${2:-}" && -f "$ROOT_DIR/profiles/${2}.env" ]]; then
-    _load_env_file "$ROOT_DIR/profiles/${2}.env"
     _load_env_file "$config_file"
   fi
 }

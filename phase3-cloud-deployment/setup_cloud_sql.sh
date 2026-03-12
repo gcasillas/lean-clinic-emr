@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../scripts/lib/config.sh"
 usage() {
   cat <<'EOF'
 Usage:
-  setup_cloud_sql.sh [--config <PATH>] [--profile <NAME>] [--project <PROJECT_ID>] [--region <REGION>] [--instance <INSTANCE_NAME>]
+  setup_cloud_sql.sh [--config <PATH>] [--project <PROJECT_ID>] [--region <REGION>] [--instance <INSTANCE_NAME>]
 
 Optional:
   --tier <DB_TIER>
@@ -20,7 +20,6 @@ EOF
 }
 
 CONFIG_FILE="${SCRIPT_DIR}/../.env"
-PROFILE=""
 PROJECT="${PROJECT_ID:-}"
 REGION="${REGION:-}"
 INSTANCE="${SQL_INSTANCE:-}"
@@ -33,7 +32,7 @@ SECRET_DB_ROOT_PASS_NAME="${SECRET_DB_ROOT_PASS:-openemr-db-root-pass}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --config) CONFIG_FILE="$2"; shift 2 ;;
-    --profile) PROFILE="$2"; shift 2 ;;
+    --profile) echo "Warning: --profile is deprecated and ignored." >&2; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
     --region) REGION="$2"; shift 2 ;;
     --instance) INSTANCE="$2"; shift 2 ;;
@@ -47,7 +46,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-load_config "$CONFIG_FILE" "$PROFILE"
+load_config "$CONFIG_FILE"
 PROJECT="${PROJECT:-${PROJECT_ID:-}}"
 REGION="${REGION:-}"
 INSTANCE="${INSTANCE:-${SQL_INSTANCE:-}}"

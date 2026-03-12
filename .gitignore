@@ -13,3 +13,6 @@ phase1-sandbox/data/fhir_bundle.json
 # OS/editor artifacts
 .DS_Store
 .vscode/
+
+# Experimental local container scaffolding
+phase3-cloud-deployment/docker/openemr-locked/

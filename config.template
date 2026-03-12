@@ -1,8 +1,8 @@
-# Copy this file to .env and update values for your clinic profile.
+# Copy this file to .env and update values for your clinic deployment.
 # Do not place plaintext secrets in this file.
 
-# Profile selector. Expected values map to files in profiles/<name>.env
-CLINIC_PROFILE=primary-care
+# Optional metadata for your clinic (informational only)
+CLINIC_NAME=clinic
 
 # GCP target
 PROJECT_ID=your-gcp-project
@@ -13,11 +13,17 @@ DATASET_ID=clinic-dataset
 FHIR_STORE_ID=clinic-fhir
 BUNDLE_PATH=phase1-sandbox/data/fhir_bundle.json
 
+# PACS/DICOM readiness (disabled by default)
+ENABLE_DICOM_PREP=no
+DICOM_DATASET_ID=clinic-dicom-dataset
+DICOM_STORE_ID=clinic-dicom
+
 # Cloud Run + Cloud SQL resources
 SERVICE_NAME=clinic-openemr
 SQL_INSTANCE=clinic-openemr-sql
 CLOUD_SQL_TIER=db-custom-1-3840
 CLOUD_RUN_IMAGE=openemr/openemr:latest
+CLOUD_RUN_PORT=80
 
 # OpenEMR database defaults
 MYSQL_DATABASE=openemr
@@ -27,6 +33,12 @@ MYSQL_PORT=3306
 SECRET_DB_USER=openemr-db-user
 SECRET_DB_PASS=openemr-db-pass
 SECRET_DB_ROOT_PASS=openemr-db-root-pass
+SECRET_SQLCONF=openemr-sqlconf
+
+# Persist OpenEMR sqlconf.php across Cloud Run revisions (recommended after first successful install)
+USE_SQLCONF_SECRET_MOUNT=no
+# SQLCONF_MOUNT_PATH should typically stay unchanged
+SQLCONF_MOUNT_PATH=/tmp/sqlconf.php
 
 # Installer and smoke-check settings
 MANUAL_SETUP=yes

@@ -2,7 +2,7 @@
 
 This repository remains EMR-first by design.
 
-Integration code should stay profile-driven and avoid clinic-specific constants so future clinic clones can reuse the same adapters.
+Integration code should stay generic and avoid clinic-specific constants so future clinic deployments can reuse the same adapters.
 
 ## Planned extension points
 

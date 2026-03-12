@@ -13,7 +13,7 @@
 - Mapping is intentionally simple to keep onboarding clear.
 - You can expand this with `Condition`, `Procedure`, and `MedicationRequest` as workflows mature.
 
-## Holistic/herbal extension plan
+## Generic clinic extension plan
 
 ### Required custom forms/fields in OpenEMR
 
@@ -31,11 +31,11 @@
 3. Contraindication form:
 - Pregnancy/lactation flags
 - Chronic conditions risk flags
-- Known herb allergy list
+- Known allergy list
 
 4. Supplement interaction tracking:
 - Current medications
-- Potential herb-drug interactions
+- Potential supplement-drug interactions
 - Severity and mitigation plan
 
 5. Follow-up cadence:
@@ -48,7 +48,7 @@
 - Intake form:
 `forms` + patient encounter notes -> `QuestionnaireResponse`, `Condition`, `Observation`
 
-- Herbal protocol:
+- Care protocol:
 Custom form table + prescriptions/notes -> `CarePlan`, `MedicationRequest`, `MedicationStatement`
 
 - Contraindications:
@@ -62,6 +62,6 @@ Appointment and encounter schedule fields -> `Appointment`, `CarePlan.activity.d
 
 ### Implementation notes
 
-- Keep custom form schemas profile-specific where possible.
-- Keep migration code generic by mapping profile field keys to FHIR transformers.
+- Keep custom form schemas modular and clinic-agnostic where possible.
+- Keep migration code generic by mapping field keys to FHIR transformers.
 - Validate terminology alignment (SNOMED CT/RxNorm where available) before production exchange.
